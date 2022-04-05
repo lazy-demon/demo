@@ -18,6 +18,9 @@ import com.almasb.fxgl.input.UserAction;
 import com.almasb.fxgl.input.view.KeyView;
 import com.almasb.fxgl.input.virtual.VirtualButton;
 import com.almasb.fxgl.physics.PhysicsComponent;
+import com.almasb.fxgl.texture.Texture;
+import com.example.components.Player;
+
 import javafx.geometry.Point2D;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
@@ -38,50 +41,67 @@ public class App extends GameApplication {
     protected void initSettings(GameSettings settings) { 
         settings.setTitle("Kings and Pigs");
         settings.setVersion("0.1");
-        settings.setWidth(30 * 32);
-        settings.setHeight(20 * 32);
+        settings.setWidth(960);
+        settings.setHeight(640);
      }
 
     private Entity player;
 
     @Override
     protected void initInput() {
-        FXGL.getInput().addAction(new UserAction("Right") {
+        getInput().addAction(new UserAction("Left") {
             @Override
             protected void onAction() {
-                player.getComponent(AnimationComponent.class).moveRight();
+                player.getComponent(Player.class).left();
             }
-        }, KeyCode.D);
 
-        FXGL.getInput().addAction(new UserAction("Left") {
+            @Override
+            protected void onActionEnd() {
+                player.getComponent(Player.class).stop();
+            }
+        }, KeyCode.A, VirtualButton.LEFT);
+
+        getInput().addAction(new UserAction("Right") {
             @Override
             protected void onAction() {
-                player.getComponent(AnimationComponent.class).moveLeft();
+                player.getComponent(Player.class).right();
             }
-        }, KeyCode.A);
-    }
 
-    @Override
-    protected void initGameVars(Map<String, Object> context) {
+            @Override
+            protected void onActionEnd() {
+                player.getComponent(Player.class).stop();
+            }
+        }, KeyCode.D, VirtualButton.RIGHT);
 
-        
-    }    
+        getInput().addAction(new UserAction("Jump") {
+            @Override
+            protected void onActionBegin() {
+                player.getComponent(Player.class).jump();
+            }
+        }, KeyCode.W, VirtualButton.A);
+
+    }  
 
     @Override
     protected void initGame() {
-        FXGL.setLevelFromMap("terrain.tmx");        
+        getGameWorld().addEntityFactory(new Factory());
+        
+        setLevelFromMap("terrain.tmx");   
 
-        player = FXGL.entityBuilder()
-                .at( 480, 518)
-                .with(new AnimationComponent())
-                .buildAndAttach();
+        // ergens hier zit het probleem 
+        spawn("player", 500, 500);
+        spawn("door", 940, 500);
 
-                FXGL.getGameWorld().addEntityFactory(new Factory());
 
-                Viewport viewport = getGameScene().getViewport();
-                viewport.setBounds(-1500, 0, 250 * 70, getAppHeight());
-                viewport.bindToEntity(player, getAppWidth() / 2, getAppHeight() / 2);
-                viewport.setLazy(true);
+        // Viewport viewport = getGameScene().getViewport();
+        // viewport.setBounds(-1500, 0, 250 * 70, getAppHeight());
+        // viewport.bindToEntity(player, getAppWidth() / 2, getAppHeight() / 2);
+        // viewport.setLazy(true);
+    }
+
+    @Override
+    protected void initPhysics() {
+        getPhysicsWorld().setGravity(0, 760);
     }
 
     public static void main(String[] args) {
