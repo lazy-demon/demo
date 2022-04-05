@@ -62,6 +62,7 @@ public class Player extends Component {
     }
 
     public void right() {
+        System.out.println("Right2");
         getEntity().setScaleX(2);
         physics.setVelocityX(170);
     }

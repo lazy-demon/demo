@@ -64,6 +64,7 @@ public class App extends GameApplication {
         getInput().addAction(new UserAction("Right") {
             @Override
             protected void onAction() {
+                System.out.println("Right");
                 player.getComponent(Player.class).right();
             }
 
@@ -89,8 +90,9 @@ public class App extends GameApplication {
         setLevelFromMap("terrain.tmx");   
 
         // ergens hier zit het probleem 
-        spawn("player", 500, 500);
-        spawn("door", 940, 500);
+        player = spawn("player", 500, 500);
+        set("player", player);
+        // spawn("door", 940, 500);
 
 
         // Viewport viewport = getGameScene().getViewport();
