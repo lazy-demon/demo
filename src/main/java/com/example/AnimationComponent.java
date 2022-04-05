@@ -5,7 +5,6 @@ import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.component.Component;
 import com.almasb.fxgl.texture.AnimatedTexture;
 import com.almasb.fxgl.texture.AnimationChannel;
-
 import javafx.geometry.Point2D;
 import javafx.util.Duration;
 
@@ -16,19 +15,19 @@ public class AnimationComponent extends Component {
     private AnimatedTexture texture;
     private AnimationChannel animIdle, animWalk;
 
-    
-
     public AnimationComponent() {
-        // animIdle = new AnimationChannel(FXGL.image("idle.png"), 11, 78, 58, Duration.seconds(0.4), 0, 10);
-        animIdle = new AnimationChannel(FXGL.image("newdude.png"), 4, 32, 42, Duration.seconds(1), 0, 3);
-        animWalk = new AnimationChannel(FXGL.image("newdude.png"), 4, 32, 42, Duration.seconds(1), 0, 3);
+        animIdle = new AnimationChannel(FXGL.image("idle.png"), 11, 78, 58, Duration.seconds(1.1), 0, 10);
+        animWalk = new AnimationChannel(FXGL.image("run.png"), 8, 78, 58, Duration.seconds(0.8), 0, 7);
+
 
         texture = new AnimatedTexture(animIdle);
     }
 
     @Override
     public void onAdded() {
-        entity.getTransformComponent().setScaleOrigin(new Point2D(16, 21));
+        entity.getTransformComponent().setScaleOrigin(new Point2D(39, 29));
+        entity.getTransformComponent().setScaleX(2);
+        entity.getTransformComponent().setScaleY(2);
         entity.getViewComponent().addChild(texture);
     }
 
@@ -42,7 +41,7 @@ public class AnimationComponent extends Component {
                 texture.loopAnimationChannel(animWalk);
             }
 
-            speed = (int) (speed * 0.9);
+            speed = (int) (speed * 0.6);
 
             if (FXGLMath.abs(speed) < 1) {
                 speed = 0;
@@ -54,12 +53,12 @@ public class AnimationComponent extends Component {
     public void moveRight() {
         speed = 150;
 
-        getEntity().setScaleX(1);
+        getEntity().setScaleX(2);
     }
 
     public void moveLeft() {
         speed = -150;
 
-        getEntity().setScaleX(-1);
+        getEntity().setScaleX(-2);
     }
 }
