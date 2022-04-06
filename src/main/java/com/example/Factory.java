@@ -16,6 +16,7 @@ import com.almasb.fxgl.physics.box2d.dynamics.BodyType;
 import com.almasb.fxgl.physics.box2d.dynamics.FixtureDef;
 import com.almasb.fxgl.ui.FontType;
 import com.example.components.Door;
+import com.example.components.Healthbar;
 import com.example.components.Player;
 
 import javafx.geometry.Point2D;
@@ -70,5 +71,23 @@ public class Factory implements EntityFactory {
                 .with(new Door())
                 .build();
     }
+
+    @Spawns("healthbar")
+    public Entity newhealthbar(SpawnData data) {
+        return entityBuilder(data)
+                .type(Healthbar)
+                .bbox(new HitBox(new Point2D(5,5), BoundingShape.circle(12)))
+                .bbox(new HitBox(new Point2D(10,25), BoundingShape.box(10, 17)))
+                .with(new CollidableComponent(true))
+                .with(new IrremovableComponent())
+                .with(new Healthbar())
+                .build();
+
+
+
+
+
+    }
+
 
 }

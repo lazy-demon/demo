@@ -20,6 +20,7 @@ import com.almasb.fxgl.input.virtual.VirtualButton;
 import com.almasb.fxgl.physics.PhysicsComponent;
 import com.almasb.fxgl.texture.Texture;
 import com.example.components.Door;
+import com.example.components.Healthbar;
 import com.example.components.Player;
 
 import javafx.geometry.Point2D;
@@ -39,15 +40,14 @@ import static com.example.EntityType.*;
 public class App extends GameApplication {
 
     @Override
-    protected void initSettings(GameSettings settings) { 
+    protected void initSettings(GameSettings settings) {
         settings.setTitle("Kings and Pigs");
         settings.setVersion("0.1");
         settings.setWidth(960);
         settings.setHeight(640);
-     }
+    }
 
-    private Entity player;
-    private Entity door;
+    private Entity player, door, healthbar;
 
     @Override
     protected void initInput() {
@@ -67,6 +67,7 @@ public class App extends GameApplication {
             @Override
             protected void onAction() {
                 player.getComponent(Player.class).right();
+                System.out.println("beweegt rechts");
             }
 
             @Override
@@ -89,19 +90,21 @@ public class App extends GameApplication {
             }
         }, KeyCode.E, VirtualButton.X);
 
-    }  
+    }
 
     @Override
     protected void initGame() {
         getGameWorld().addEntityFactory(new Factory());
-        
-        setLevelFromMap("terrain.tmx");   
 
-        // ergens hier zit het probleem 
+        setLevelFromMap("terrain.tmx");
+
+        // ergens hier zit het probleem
         player = spawn("player", 500, 500);
         door = spawn("door", 800, 521);
+        healthbar = spawn("healthbar", 800, 300);
         set("player", player);
         set("door", door);
+        set("healthbar", healthbar);
 
 
         // Viewport viewport = getGameScene().getViewport();
