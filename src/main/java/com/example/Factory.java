@@ -15,6 +15,7 @@ import com.almasb.fxgl.physics.PhysicsComponent;
 import com.almasb.fxgl.physics.box2d.dynamics.BodyType;
 import com.almasb.fxgl.physics.box2d.dynamics.FixtureDef;
 import com.almasb.fxgl.ui.FontType;
+import com.example.components.Diamond;
 import com.example.components.Door;
 import com.example.components.Healthbar;
 import com.example.components.Gem;
@@ -76,9 +77,10 @@ public class Factory implements EntityFactory {
     @Spawns("healthbar")
     public Entity newhealthbar(SpawnData data) {
         return entityBuilder(data)
-                .type(Healthbar)
+                .type(HEALTHBAR)
                 .with(new Healthbar())
                 .build();
+    }
      
     @Spawns("gem")
     public Entity newGem(SpawnData data) {
@@ -89,6 +91,18 @@ public class Factory implements EntityFactory {
                 .with(new CollidableComponent(true))
                 .with(new IrremovableComponent())
                 .with(new Gem())
+                .build();
+    }
+
+    @Spawns("diamond")
+    public Entity newDiamond(SpawnData data) {
+        return entityBuilder(data)
+                .type(DIAMOND)
+                .bbox(new HitBox(new Point2D(5,5), BoundingShape.circle(12)))
+                .bbox(new HitBox(new Point2D(10,25), BoundingShape.box(10, 17)))
+                .with(new CollidableComponent(true))
+                .with(new IrremovableComponent())
+                .with(new Diamond())
                 .build();
     }
 }

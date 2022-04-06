@@ -1,4 +1,4 @@
-package com.example.components;
+package com.example;
 
 import com.almasb.fxgl.animation.Animation;
 import com.almasb.fxgl.animation.Interpolators;

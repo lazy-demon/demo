@@ -12,15 +12,15 @@ import javafx.util.Duration;
 public class Door extends Component {
     private PhysicsComponent physics;
     private AnimatedTexture texture;
-    private AnimationChannel animOpen, animClose;
+    private AnimationChannel animOpen, animClose, animIdle;
 
 
     public Door() {
         animOpen = new AnimationChannel(FXGL.image("open.png"), 5, 46, 56, Duration.seconds(1), 0, 4);
         animClose = new AnimationChannel(FXGL.image("close.png"), 3, 46, 56, Duration.seconds(1), 0, 2);
+        animIdle = new AnimationChannel(FXGL.image("dooridle.png"), 1, 46, 56, Duration.seconds(1), 0, 0);
 
-
-        texture = new AnimatedTexture(animOpen);
+        texture = new AnimatedTexture(animIdle);
     }
 
     @Override
@@ -35,7 +35,7 @@ public class Door extends Component {
 
     }
 
-    public void enter() {
+    public void toggle() {
         if (texture.getAnimationChannel() != animOpen) {
             texture.playAnimationChannel(animOpen);
         } else {
