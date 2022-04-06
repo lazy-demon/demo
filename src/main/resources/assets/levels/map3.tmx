@@ -87,6 +87,5 @@
   <object id="40" type="solid" x="315" y="308" width="97" height="64"/>
   <object id="41" type="solid" x="49" y="298" width="263" height="81"/>
   <object id="42" type="solid" x="27" y="291" width="241" height="79"/>
-  <object id="43" x="1054" y="224" width="1"/>
  </objectgroup>
 </map>
