@@ -89,7 +89,7 @@ public class App extends GameApplication {
             @Override
             protected void onActionBegin() {
                 door.getComponent(Door.class).enter();
-                System.out.println("Opent deur");
+                System.out.println("Opent deurr");
             }
         }, KeyCode.E, VirtualButton.X);
 
