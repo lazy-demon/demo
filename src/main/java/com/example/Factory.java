@@ -16,6 +16,7 @@ import com.almasb.fxgl.physics.box2d.dynamics.BodyType;
 import com.almasb.fxgl.physics.box2d.dynamics.FixtureDef;
 import com.almasb.fxgl.ui.FontType;
 import com.example.components.Door;
+import com.example.components.Gem;
 import com.example.components.Player;
 
 import javafx.geometry.Point2D;
@@ -68,6 +69,18 @@ public class Factory implements EntityFactory {
                 .with(new CollidableComponent(true))
                 .with(new IrremovableComponent())
                 .with(new Door())
+                .build();
+    }
+
+    @Spawns("gem")
+    public Entity newGem(SpawnData data) {
+        return entityBuilder(data)
+                .type(GEM)
+                .bbox(new HitBox(new Point2D(5,5), BoundingShape.circle(12)))
+                .bbox(new HitBox(new Point2D(10,25), BoundingShape.box(10, 17)))
+                .with(new CollidableComponent(true))
+                .with(new IrremovableComponent())
+                .with(new Gem())
                 .build();
     }
 

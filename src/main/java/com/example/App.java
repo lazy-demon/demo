@@ -39,15 +39,16 @@ import static com.example.EntityType.*;
 public class App extends GameApplication {
 
     @Override
-    protected void initSettings(GameSettings settings) { 
+    protected void initSettings(GameSettings settings) {
         settings.setTitle("Kings and Pigs");
         settings.setVersion("0.1");
         settings.setWidth(960);
         settings.setHeight(640);
-     }
+    }
 
     private Entity player;
     private Entity door;
+    private Entity gem;
 
     @Override
     protected void initInput() {
@@ -89,30 +90,41 @@ public class App extends GameApplication {
             }
         }, KeyCode.E, VirtualButton.X);
 
-    }  
+    }
 
     @Override
     protected void initGame() {
         getGameWorld().addEntityFactory(new Factory());
-        
-        setLevelFromMap("terrain.tmx");   
 
-        // ergens hier zit het probleem 
+        setLevelFromMap("terrain.tmx");
+
+        // ergens hier zit het probleem
         player = spawn("player", 500, 500);
         door = spawn("door", 800, 521);
+        gem = spawn("gem", 800, 400);
         set("player", player);
         set("door", door);
+        set("gem", gem);
 
+        Viewport viewport = getGameScene().getViewport();
+        viewport.setZoom(2);
+        viewport.bindToEntity(player, getAppWidth() / 2, getAppHeight() / 2);
 
-        // Viewport viewport = getGameScene().getViewport();
-        // viewport.setBounds(-1500, 0, 250 * 70, getAppHeight());
-        // viewport.bindToEntity(player, getAppWidth() / 2, getAppHeight() / 2);
-        // viewport.setLazy(true);
+        // set viewport to not go beyond the level boundaries
+        viewport.setBounds(0, 0, 960, 640);
+
+        viewport.setLazy(true);
     }
 
     @Override
     protected void initPhysics() {
         getPhysicsWorld().setGravity(0, 760);
+
+        onCollisionOneTimeOnly(PLAYER, GEM, (pl, prompt) -> {
+            prompt.setOpacity(1);
+
+            despawnWithDelay(prompt, Duration.seconds(0.1));
+        });
     }
 
     public static void main(String[] args) {
