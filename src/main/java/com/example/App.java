@@ -55,6 +55,7 @@ public class App extends GameApplication {
             @Override
             protected void onAction() {
                 player.getComponent(Player.class).left();
+                System.out.println("Beweegt naar links");
             }
 
             @Override
@@ -67,6 +68,7 @@ public class App extends GameApplication {
             @Override
             protected void onAction() {
                 player.getComponent(Player.class).right();
+                System.out.println("Beweegt naar rechts");
             }
 
             @Override
@@ -79,6 +81,7 @@ public class App extends GameApplication {
             @Override
             protected void onActionBegin() {
                 player.getComponent(Player.class).jump();
+                System.out.println("Beweegt naar omhoog");
             }
         }, KeyCode.W, VirtualButton.A);
 
@@ -86,6 +89,7 @@ public class App extends GameApplication {
             @Override
             protected void onActionBegin() {
                 door.getComponent(Door.class).enter();
+                System.out.println("Opent deur");
             }
         }, KeyCode.E, VirtualButton.X);
 
