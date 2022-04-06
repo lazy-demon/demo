@@ -39,7 +39,7 @@ public class Factory implements EntityFactory {
         // this avoids player sticking to walls
         physics.setFixtureDef(new FixtureDef().friction(0.0f));
 
-        return entityBuilder()
+        return entityBuilder(data)
                 .type(PLAYER)
                 .bbox(new HitBox(new Point2D(5,5), BoundingShape.circle(12)))
                 .bbox(new HitBox(new Point2D(10,25), BoundingShape.box(10, 17)))
@@ -52,7 +52,7 @@ public class Factory implements EntityFactory {
 
     @Spawns("solid")
     public Entity newPlatform(SpawnData data) {
-        return entityBuilder()
+        return entityBuilder(data)
                 .type(PLATFORM)
                 .bbox(new HitBox(BoundingShape.box(data.<Integer>get("width"), data.<Integer>get("height"))))
                 .with(new PhysicsComponent())
@@ -61,7 +61,7 @@ public class Factory implements EntityFactory {
 
     @Spawns("door")
     public Entity newDoor(SpawnData data) {
-        return entityBuilder()
+        return entityBuilder(data)
                 .type(DOOR)
                 .bbox(new HitBox(new Point2D(5,5), BoundingShape.circle(12)))
                 .bbox(new HitBox(new Point2D(10,25), BoundingShape.box(10, 17)))

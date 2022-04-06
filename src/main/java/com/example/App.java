@@ -99,7 +99,7 @@ public class App extends GameApplication {
 
         // ergens hier zit het probleem 
         player = spawn("player", 500, 500);
-        door = spawn("door", 940, 500);
+        door = spawn("door", 800, 521);
         set("player", player);
         set("door", door);
 
