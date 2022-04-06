@@ -33,8 +33,6 @@ public class Player extends Component {
     @Override
     public void onAdded() {
         entity.getTransformComponent().setScaleOrigin(new Point2D(20, 29));
-        entity.getTransformComponent().setScaleX(2);
-        entity.getTransformComponent().setScaleY(2);
         entity.getViewComponent().addChild(texture);
 
         physics.onGroundProperty().addListener((obs, old, isOnGround)
@@ -67,12 +65,12 @@ public class Player extends Component {
     }
 
     public void left() {
-        getEntity().setScaleX(-2);
+        getEntity().setScaleX(-1);
         physics.setVelocityX(-170);
     }
 
     public void right() {
-        getEntity().setScaleX(2);
+        getEntity().setScaleX(1);
         physics.setVelocityX(170);
     }
 

@@ -95,10 +95,10 @@ public class App extends GameApplication {
     protected void initGame() {
         getGameWorld().addEntityFactory(new Factory());
         
-        setLevelFromMap("terrain.tmx");   
+        setLevelFromMap("map1.tmx");
 
         // ergens hier zit het probleem 
-        player = spawn("player", 500, 500);
+        player = spawn("player", 100, 100);
         door = spawn("door", 800, 521);
         set("player", player);
         set("door", door);
