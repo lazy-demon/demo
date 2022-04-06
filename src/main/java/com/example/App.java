@@ -49,7 +49,7 @@ public class App extends GameApplication {
         settings.setHeight(640);
     }
 
-    private Entity player, door, healthbar;
+    private Entity player, door, healthbar, gem;
 
     @Override
     protected void initInput() {
@@ -89,6 +89,7 @@ public class App extends GameApplication {
             @Override
             protected void onActionBegin() {
                 door.getComponent(Door.class).enter();
+                System.out.println("Opent de deur");
             }
         }, KeyCode.E, VirtualButton.X);
 
