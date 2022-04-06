@@ -5,6 +5,7 @@ import com.almasb.fxgl.app.ApplicationMode;
 import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
 import com.almasb.fxgl.app.scene.GameView;
+import com.almasb.fxgl.app.scene.IntroScene;
 import com.almasb.fxgl.app.scene.LoadingScene;
 import com.almasb.fxgl.app.scene.SceneFactory;
 import com.almasb.fxgl.app.scene.Viewport;
@@ -21,6 +22,7 @@ import com.almasb.fxgl.physics.PhysicsComponent;
 import com.almasb.fxgl.texture.Texture;
 import com.example.components.Door;
 import com.example.components.Healthbar;
+import com.example.components.GameIntro;
 import com.example.components.Player;
 
 import javafx.geometry.Point2D;
@@ -102,20 +104,31 @@ public class App extends GameApplication {
         player = spawn("player", 500, 500);
         door = spawn("door", 800, 521);
         healthbar = spawn("healthbar", 800, 300);
+        gem = spawn("gem", 800, 400);
         set("player", player);
         set("door", door);
         set("healthbar", healthbar);
+        set("gem", gem);
 
+        Viewport viewport = getGameScene().getViewport();
+        viewport.setZoom(2);
+        viewport.bindToEntity(player, getAppWidth() / 2, getAppHeight() / 2);
 
-        // Viewport viewport = getGameScene().getViewport();
-        // viewport.setBounds(-1500, 0, 250 * 70, getAppHeight());
-        // viewport.bindToEntity(player, getAppWidth() / 2, getAppHeight() / 2);
-        // viewport.setLazy(true);
+        // set viewport to not go beyond the level boundaries
+        viewport.setBounds(0, 0, 960, 640);
+
+        viewport.setLazy(true);
     }
 
     @Override
     protected void initPhysics() {
         getPhysicsWorld().setGravity(0, 760);
+
+        onCollisionOneTimeOnly(PLAYER, GEM, (pl, prompt) -> {
+            prompt.setOpacity(1);
+
+            despawnWithDelay(prompt, Duration.seconds(0.1));
+        });
     }
 
     public static void main(String[] args) {
