@@ -19,6 +19,7 @@ import com.almasb.fxgl.input.view.KeyView;
 import com.almasb.fxgl.input.virtual.VirtualButton;
 import com.almasb.fxgl.physics.PhysicsComponent;
 import com.almasb.fxgl.texture.Texture;
+import com.example.components.Door;
 import com.example.components.Player;
 
 import javafx.geometry.Point2D;
@@ -46,6 +47,7 @@ public class App extends GameApplication {
      }
 
     private Entity player;
+    private Entity door;
 
     @Override
     protected void initInput() {
@@ -64,7 +66,6 @@ public class App extends GameApplication {
         getInput().addAction(new UserAction("Right") {
             @Override
             protected void onAction() {
-                System.out.println("Right");
                 player.getComponent(Player.class).right();
             }
 
@@ -81,6 +82,13 @@ public class App extends GameApplication {
             }
         }, KeyCode.W, VirtualButton.A);
 
+        getInput().addAction(new UserAction("enter") {
+            @Override
+            protected void onActionBegin() {
+                door.getComponent(Door.class).enter();
+            }
+        }, KeyCode.E, VirtualButton.X);
+
     }  
 
     @Override
@@ -91,8 +99,9 @@ public class App extends GameApplication {
 
         // ergens hier zit het probleem 
         player = spawn("player", 500, 500);
+        door = spawn("door", 940, 500);
         set("player", player);
-        // spawn("door", 940, 500);
+        set("door", door);
 
 
         // Viewport viewport = getGameScene().getViewport();

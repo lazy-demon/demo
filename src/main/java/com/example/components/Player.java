@@ -17,12 +17,14 @@ public class Player extends Component {
     private PhysicsComponent physics;
 
     private AnimatedTexture texture;
-    private AnimationChannel animIdle, animWalk;
+    private AnimationChannel animIdle, animWalk, animJump, animFall;
 
 
     public Player() {
         animIdle = new AnimationChannel(FXGL.image("idle.png"), 11, 78, 58, Duration.seconds(1.1), 0, 10);
         animWalk = new AnimationChannel(FXGL.image("run.png"), 8, 78, 58, Duration.seconds(0.8), 0, 7);
+        animJump = new AnimationChannel(FXGL.image("jump.png"), 1, 78, 58, Duration.seconds(1), 0, 0);
+        animFall = new AnimationChannel(FXGL.image("fall.png"), 1, 78, 58, Duration.seconds(1), 0, 0);
 
 
         texture = new AnimatedTexture(animIdle);
@@ -30,7 +32,7 @@ public class Player extends Component {
 
     @Override
     public void onAdded() {
-        entity.getTransformComponent().setScaleOrigin(new Point2D(39, 29));
+        entity.getTransformComponent().setScaleOrigin(new Point2D(20, 29));
         entity.getTransformComponent().setScaleX(2);
         entity.getTransformComponent().setScaleY(2);
         entity.getViewComponent().addChild(texture);
@@ -45,7 +47,15 @@ public class Player extends Component {
 
     @Override
     public void onUpdate(double tpf) {
-        if (physics.isMovingX()) {
+        if (physics.getVelocityY() > 0) {
+            if (texture.getAnimationChannel() != animJump) {
+                texture.loopAnimationChannel(animJump);
+            }
+        } else if (physics.getVelocityY() < 0) {
+            if (texture.getAnimationChannel() != animFall) {
+                texture.loopAnimationChannel(animFall);
+            }
+        } else if (physics.isMovingX()) {
             if (texture.getAnimationChannel() != animWalk) {
                 texture.loopAnimationChannel(animWalk);
             }
@@ -62,7 +72,6 @@ public class Player extends Component {
     }
 
     public void right() {
-        System.out.println("Right2");
         getEntity().setScaleX(2);
         physics.setVelocityX(170);
     }

@@ -34,4 +34,12 @@ public class Door extends Component {
     public void onUpdate(double tpf) {
 
     }
+
+    public void enter() {
+        if (texture.getAnimationChannel() != animOpen) {
+            texture.playAnimationChannel(animOpen);
+        } else {
+            texture.playAnimationChannel(animClose);
+        }
+    }
 }
