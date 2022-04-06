@@ -16,6 +16,7 @@ import com.almasb.fxgl.physics.box2d.dynamics.BodyType;
 import com.almasb.fxgl.physics.box2d.dynamics.FixtureDef;
 import com.almasb.fxgl.ui.FontType;
 import com.example.components.Door;
+import com.example.components.Healthbar;
 import com.example.components.Gem;
 import com.example.components.Player;
 
@@ -72,6 +73,13 @@ public class Factory implements EntityFactory {
                 .build();
     }
 
+    @Spawns("healthbar")
+    public Entity newhealthbar(SpawnData data) {
+        return entityBuilder(data)
+                .type(Healthbar)
+                .with(new Healthbar())
+                .build();
+     
     @Spawns("gem")
     public Entity newGem(SpawnData data) {
         return entityBuilder(data)
@@ -83,5 +91,4 @@ public class Factory implements EntityFactory {
                 .with(new Gem())
                 .build();
     }
-
 }

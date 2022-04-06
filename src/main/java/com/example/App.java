@@ -21,6 +21,7 @@ import com.almasb.fxgl.input.virtual.VirtualButton;
 import com.almasb.fxgl.physics.PhysicsComponent;
 import com.almasb.fxgl.texture.Texture;
 import com.example.components.Door;
+import com.example.components.Healthbar;
 import com.example.components.GameIntro;
 import com.example.components.Player;
 
@@ -48,9 +49,7 @@ public class App extends GameApplication {
         settings.setHeight(640);
     }
 
-    private Entity player;
-    private Entity door;
-    private Entity gem;
+    private Entity player, door, healthbar;
 
     @Override
     protected void initInput() {
@@ -70,6 +69,7 @@ public class App extends GameApplication {
             @Override
             protected void onAction() {
                 player.getComponent(Player.class).right();
+                System.out.println("beweegt rechts");
             }
 
             @Override
@@ -103,9 +103,11 @@ public class App extends GameApplication {
         // ergens hier zit het probleem
         player = spawn("player", 500, 500);
         door = spawn("door", 800, 521);
+        healthbar = spawn("healthbar", 800, 300);
         gem = spawn("gem", 800, 400);
         set("player", player);
         set("door", door);
+        set("healthbar", healthbar);
         set("gem", gem);
 
         Viewport viewport = getGameScene().getViewport();
