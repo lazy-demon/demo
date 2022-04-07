@@ -6,6 +6,7 @@ import com.almasb.fxgl.dsl.FXGL;
 
 import org.jetbrains.annotations.NotNull;
 
+import javafx.geometry.HPos;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
@@ -17,6 +18,7 @@ import javafx.scene.layout.BackgroundPosition;
 import javafx.scene.layout.BackgroundRepeat;
 import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 
 public class GlobalMenuTemplate extends FXGLMenu {
@@ -37,18 +39,20 @@ public class GlobalMenuTemplate extends FXGLMenu {
 
         imageView = new ImageView(image); 
         imageView.setFitWidth(500); 
-        imageView.setFitHeight(200); 
-
-        gridPane.add(imageView, 1, 0);
-        gridPane.add(buttons[0], 0, 1);
-        gridPane.add(buttons[1], 1, 1);
-        gridPane.add(buttons[2], 2, 1);
-
-        this.pane.setMinWidth(FXGL.getAppWidth());
-        this.pane.setMinHeight(FXGL.getAppHeight());
-        this.pane.setCenter((Node)gridPane);
+        imageView.setFitHeight(110); 
 
         gridPane.setAlignment(Pos.CENTER);
+
+        gridPane.add(imageView, 1, 0);
+
+        for (int i = 0; i < buttons.length; i++) {
+            gridPane.add(buttons[i], i, 1);
+            GridPane.setHalignment(buttons[i], HPos.CENTER);
+        }
+
+        this.pane.setMinWidth(960);
+        this.pane.setMinHeight(640);
+        this.pane.setCenter((Node)gridPane);
     }
 
     public BorderPane getMenu() {
