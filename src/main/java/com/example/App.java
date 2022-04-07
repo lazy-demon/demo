@@ -121,9 +121,9 @@ public class App extends GameApplication {
     protected void initGame() {
         getGameWorld().addEntityFactory(new Factory());
 
-        setLevelFromMap("terrain.tmx");
+        setLevelFromMap("map1.tmx");
 
-        player = spawn("player", 500, 500);
+        player = spawn("player", 100, 100);
         door = spawn("door", 600, 521);
         // healthbar = spawn("healthbar", 800, 300);
 
@@ -194,7 +194,7 @@ public class App extends GameApplication {
             }, Duration.seconds(0.7));
         });
 
-        onCollisionOneTimeOnly(PLAYER, DOOR,  (pl, prompt) -> {
+        onCollisionBegin(PLAYER, DOOR,  (pl, prompt) -> {
             onDoor = true;
         });
 
