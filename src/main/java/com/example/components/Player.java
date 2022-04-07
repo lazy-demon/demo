@@ -19,7 +19,7 @@ public class Player extends Component {
     private PhysicsComponent physics;
 
     private AnimatedTexture texture;
-    private AnimationChannel animIdle, animWalk, animJump, animFall, animAttack, animDoorIn, animDown;
+    private AnimationChannel animIdle, animWalk, animJump, animFall, animAttack, animDoorIn, animDown, animHit;
 
     public Player() {
         animIdle = new AnimationChannel(FXGL.image("idle.png"), 11, 78, 58, Duration.seconds(1.1), 0, 10);
@@ -29,6 +29,7 @@ public class Player extends Component {
         animAttack = new AnimationChannel(FXGL.image("attack.png"), 3, 78, 58, Duration.seconds(0.5), 0, 2);
         animDoorIn = new AnimationChannel(FXGL.image("doorIn.png"), 8, 78, 58, Duration.seconds(1), 0, 7);
         animDown = new AnimationChannel(FXGL.image("down.png"), 1, 78, 58, Duration.seconds(0.1), 0, 0);
+        animHit = new AnimationChannel(FXGL.image("hit.png"), 2, 78, 58, Duration.seconds(0.5), 0, 1);
 
         texture = new AnimatedTexture(animIdle);
     }
@@ -100,9 +101,8 @@ public class Player extends Component {
             texture.playAnimationChannel(animAttack);
             FXGL.runOnce(() -> {
                 isBusy = false;
-            }, Duration.seconds(0.7));
+            }, Duration.seconds(0.5));
         }
-
     }
 
     public void enter() {
@@ -113,7 +113,16 @@ public class Player extends Component {
                 isBusy = false;
             }, Duration.seconds(1));
         }
+    }
 
+    public void hit() {
+        if (isBusy == false) {
+            isBusy = true;
+            texture.playAnimationChannel(animHit);
+            FXGL.runOnce(() -> {
+                isBusy = false;
+            }, Duration.seconds(0.5));
+        }
     }
 
     public void jump() {
