@@ -56,10 +56,7 @@ public class GameMenu extends FXGLMenu {
       buttons[1].setOnMouseClicked(e -> FXGL.getGameController().exit());
       buttons[2].setOnMouseClicked(e -> FXGL.getGameController().gotoMainMenu());
 
-      GlobalMenuTemplate globalMenuTemplate = new GlobalMenuTemplate(type, buttons);
-
-      BackgroundImage menuBackground = new BackgroundImage(new Image("/assets/start menu/bg-menu.jpg", 960, 640, false, true), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
-      getContentRoot().setBackground(new Background(new BackgroundImage[] { menuBackground }));
+      GlobalMenuTemplate globalMenuTemplate = new GlobalMenuTemplate(buttons);
 
       getContentRoot().getChildren().addAll(globalMenuTemplate.getMenu());
 
