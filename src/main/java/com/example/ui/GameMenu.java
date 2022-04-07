@@ -48,13 +48,13 @@ public class GameMenu extends FXGLMenu {
       
       Button[] buttons = new Button[3];
 
-      buttons[0] = this.uiComponentsFactory.customMainButton("New Game");
-      buttons[1] = this.uiComponentsFactory.customMainButton("Restart Game");
-      buttons[2] = this.uiComponentsFactory.customMainButton("Settings");
+      buttons[0] = this.uiComponentsFactory.customMainButton("Resume");
+      buttons[1] = this.uiComponentsFactory.customMainButton("Exit");
+      buttons[2] = this.uiComponentsFactory.customMainButton("Home");
 
-      buttons[0].setOnMouseClicked(event -> {
-        fireNewGame();
-      });
+      buttons[0].setOnMouseClicked(e -> fireResume());
+      buttons[1].setOnMouseClicked(e -> FXGL.getGameController().exit());
+      buttons[2].setOnMouseClicked(e -> FXGL.getGameController().gotoMainMenu());
 
       GlobalMenuTemplate globalMenuTemplate = new GlobalMenuTemplate(type, buttons);
 
