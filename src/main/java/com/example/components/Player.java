@@ -91,42 +91,34 @@ public class Player extends Component {
     }
 
     public void down() {
-        if (isBusy == false) {
+        if (!isBusy) {
             isBusy = true;
             texture.playAnimationChannel(animDown);
-            FXGL.runOnce(() -> {
-                isBusy = false;
-            }, Duration.seconds(1));
+            FXGL.runOnce(() -> isBusy = false, Duration.seconds(1));
         }
     }
 
     public void attack() {
-        if (isBusy == false) {
+        if (!isBusy) {
             isBusy = true;
             texture.playAnimationChannel(animAttack);
-            FXGL.runOnce(() -> {
-                isBusy = false;
-            }, Duration.seconds(0.5));
+            FXGL.runOnce(() -> isBusy = false, Duration.seconds(0.5));
         }
     }
 
     public void enter() {
-        if (isBusy == false) {
+        if (!isBusy) {
             isBusy = true;
             texture.playAnimationChannel(animDoorIn);
-            FXGL.runOnce(() -> {
-                isBusy = false;
-            }, Duration.seconds(1));
+            FXGL.runOnce(() -> isBusy = false, Duration.seconds(1));
         }
     }
 
     public void hit() {
-        if (isBusy == false) {
+        if (!isBusy) {
             isBusy = true;
             texture.playAnimationChannel(animHit);
-            FXGL.runOnce(() -> {
-                isBusy = false;
-            }, Duration.seconds(0.5));
+            FXGL.runOnce(() -> isBusy = false, Duration.seconds(0.5));
         }
     }
 

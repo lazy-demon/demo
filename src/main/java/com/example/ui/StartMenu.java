@@ -1,12 +1,9 @@
 package com.example.ui;
 
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
 import com.almasb.fxgl.app.scene.FXGLMenu;
 import com.almasb.fxgl.app.scene.MenuType;
-import com.almasb.fxgl.dsl.FXGL;
-import com.almasb.fxgl.scene.Scene;
 import com.example.scoreboard.Score;
 
 import org.jetbrains.annotations.NotNull;
@@ -14,14 +11,11 @@ import org.jetbrains.annotations.NotNull;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.geometry.Rectangle2D;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundImage;
 import javafx.scene.layout.BackgroundPosition;
@@ -29,24 +23,21 @@ import javafx.scene.layout.BackgroundRepeat;
 import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
 import javafx.scene.text.Font;
-import javafx.stage.Screen;
-import javafx.stage.Stage;
 
 class StartMenu extends FXGLMenu {
 
   GlobalMenuTemplate globalMenuTemplate;
   private UiComponentsFactory uiComponentsFactory = new UiComponentsFactory();
-  private BorderPane PrimaryView;
+  private BorderPane primaryView;
   
   public StartMenu(@NotNull MenuType type) throws FileNotFoundException {
     super(type);
 
     globalMenuTemplate = new GlobalMenuTemplate(setMainMenu());
-    PrimaryView = globalMenuTemplate.getMenu();
+    primaryView = globalMenuTemplate.getMenu();
 
-    getContentRoot().getChildren().addAll(PrimaryView);
+    getContentRoot().getChildren().addAll(primaryView);
   }
 
   public Button[] setMainMenu() {
@@ -93,7 +84,7 @@ class StartMenu extends FXGLMenu {
 
     startGameBtn.setOnMouseClicked(event -> {
 
-      if (userNameField.getText() == "") {
+      if ("".equals(userNameField.getText())) {
         userNameField.setPromptText("Required Enter Name...");
 
       } else {
@@ -104,7 +95,7 @@ class StartMenu extends FXGLMenu {
         fireNewGame();
         getContentRoot().getChildren().clear();
         setBackground("/assets/start menu/bg-menu.jpg");
-        getContentRoot().getChildren().addAll(PrimaryView);
+        getContentRoot().getChildren().addAll(primaryView);
       }
     });
     
@@ -120,7 +111,7 @@ class StartMenu extends FXGLMenu {
 
     borderPane.setMinWidth(960);
     borderPane.setMinHeight(640);
-    borderPane.setCenter((Node)gridPane);
+    borderPane.setCenter(gridPane);
 
     setBackground("/assets/start menu/bg-user-menu.jpg");
 
@@ -129,7 +120,7 @@ class StartMenu extends FXGLMenu {
 
   public void setBackground(String path) {
     BackgroundImage menuBackground = new BackgroundImage(new Image(path, 960, 640, false, true), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
-    getContentRoot().setBackground(new Background(new BackgroundImage[] { menuBackground }));
+    getContentRoot().setBackground(new Background(menuBackground));
 
   }
 }
