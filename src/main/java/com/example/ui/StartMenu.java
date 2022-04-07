@@ -7,9 +7,12 @@ import com.almasb.fxgl.app.scene.FXGLMenu;
 import com.almasb.fxgl.app.scene.MenuType;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.scene.Scene;
+import com.example.scoreboard.Score;
 
 import org.jetbrains.annotations.NotNull;
 
+import javafx.geometry.HPos;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
@@ -79,14 +82,30 @@ class StartMenu extends FXGLMenu {
     imageView.setFitHeight(110); 
 
     Label label = new Label("User Name");
+    label.setFont(new Font("verdana", 30));
+
     TextField userNameField = new TextField();
-    Button startGameBtn = new Button("Start Game");
+    userNameField.setFont(new Font("verdana", 20));
+    userNameField.setPadding(new Insets(10,10,10,10));
+    userNameField.setPromptText("Enter Name...");
+
+    Button startGameBtn = this.uiComponentsFactory.customMainButton("START GAME");
 
     startGameBtn.setOnMouseClicked(event -> {
-      fireNewGame();
-      getContentRoot().getChildren().clear();
-      setBackground("/assets/start menu/bg-menu.jpg");
-      getContentRoot().getChildren().addAll(PrimaryView);
+
+      if (userNameField.getText() == "") {
+        userNameField.setPromptText("Required Enter Name...");
+
+      } else {
+
+        Score score = new Score(userNameField.getText());
+        score.setUserScoreBoard();
+
+        fireNewGame();
+        getContentRoot().getChildren().clear();
+        setBackground("/assets/start menu/bg-menu.jpg");
+        getContentRoot().getChildren().addAll(PrimaryView);
+      }
     });
     
     gridPane.setAlignment(Pos.CENTER);
@@ -96,6 +115,8 @@ class StartMenu extends FXGLMenu {
     gridPane.add(label, 0, 1);
     gridPane.add(userNameField, 0, 2);
     gridPane.add(startGameBtn, 0, 3);
+
+    GridPane.setHalignment(startGameBtn, HPos.CENTER);
 
     borderPane.setMinWidth(960);
     borderPane.setMinHeight(640);
