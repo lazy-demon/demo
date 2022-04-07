@@ -18,6 +18,7 @@ import com.almasb.fxgl.ui.FontType;
 import com.example.components.Diamond;
 import com.example.components.Door;
 import com.example.components.Healthbar;
+import com.example.components.King;
 import com.example.components.Gem;
 import com.example.components.Player;
 
@@ -50,6 +51,26 @@ public class Factory implements EntityFactory {
                 .with(new CollidableComponent(true))
                 .with(new IrremovableComponent())
                 .with(new Player())
+                .build();
+    }
+
+    @Spawns("king")
+    public Entity newKing(SpawnData data) {
+        PhysicsComponent physics = new PhysicsComponent();
+        physics.setBodyType(BodyType.DYNAMIC);
+        physics.addGroundSensor(new HitBox("GROUND_SENSOR", new Point2D(16, 38), BoundingShape.box(6, 8)));
+
+        // this avoids player sticking to walls
+        physics.setFixtureDef(new FixtureDef().friction(0.0f));
+
+        return entityBuilder(data)
+                .type(KING)
+                .bbox(new HitBox(new Point2D(5,5), BoundingShape.circle(12)))
+                .bbox(new HitBox(new Point2D(10,25), BoundingShape.box(10, 17)))
+                .with(physics)
+                .with(new CollidableComponent(true))
+                .with(new IrremovableComponent())
+                .with(new King())
                 .build();
     }
 

@@ -41,7 +41,9 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.util.Duration;
 
+import java.util.ArrayList;
 import java.util.EnumSet;
+import java.util.List;
 import java.util.Map;
 
 import static com.almasb.fxgl.dsl.FXGL.*;
@@ -66,9 +68,15 @@ public class App extends GameApplication {
         settings.setSceneFactory((SceneFactory)new UISceneFactory());
     }
 
-    private Entity player, door, healthbar, diamond;
+    private Entity player, door, healthbar, diamond, king;
 
     boolean onDoor = false;
+
+    int level = 0;
+
+    // make list
+   List<AnimatedTexture> list = new ArrayList<>();
+
 
 
     @Override
@@ -111,28 +119,42 @@ public class App extends GameApplication {
         getInput().addAction(new UserAction("attack") {
             @Override
             protected void onActionBegin() {
-                player.getComponent(Player.class).enter();
+                player.getComponent(Player.class).attack();
             }
         }, KeyCode.E, VirtualButton.X);
 
+        getInput().addAction(new UserAction("next level") {
+            @Override
+            protected void onActionBegin() {
+                nextLevel();
+            }
+        }, KeyCode.ENTER, VirtualButton.X);
+
+        getInput().addAction(new UserAction("hit") {
+            @Override
+            protected void onActionBegin() {
+                getGameScene().removeUINode(list.get(2));
+                player.getComponent(Player.class).hit();
+            }
+        }, KeyCode.BACK_SLASH, VirtualButton.X);
     }
 
     @Override
     protected void initGame() {
         getGameWorld().addEntityFactory(new Factory());
 
-        setLevelFromMap("map1.tmx");
+        nextLevel();
 
         player = spawn("player", 100, 100);
+        // king = spawn("king", 285, 228);
         door = spawn("door", 600, 521);
-        // healthbar = spawn("healthbar", 800, 300);
 
         player.setZIndex(1);
         door.setZIndex(0);
 
         set("player", player);
+        // set("king", king);
         set("door", door);
-        // set("healthbar", healthbar);
 
         entityBuilder()
                 .type(DIAMOND)
@@ -179,6 +201,10 @@ public class App extends GameApplication {
         viewport.bindToEntity(player, getAppWidth() / 2, getAppHeight() / 2);
         viewport.setBounds(0, 0, 960, 640);
         viewport.setLazy(true);
+
+        list.add(health1node);
+        list.add(health2node);
+        list.add(health3node);
     }
 
     @Override
@@ -205,7 +231,7 @@ public class App extends GameApplication {
 
     @Override
     protected void onUpdate(double tpf) {
-        System.out.println(onDoor);
+        // System.out.println(onDoor);
         getInput().addTriggerListener(new TriggerListener() {
 
             // DOWN
@@ -219,6 +245,20 @@ public class App extends GameApplication {
 
         });
     }
+
+    private void nextLevel() {
+        if (level != 0) {
+            player.getComponent(PhysicsComponent.class).overwritePosition(new Point2D(100, 100));
+        }
+        if (level == 5) {
+            level = 1;
+        } else {
+            level++;
+        }
+        setLevelFromMap("map" + level  + ".tmx");
+    }
+
+    
 
     public static void main(String[] args) {
         launch(args);
