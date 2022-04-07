@@ -21,12 +21,11 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 
-public class GlobalMenuTemplate extends FXGLMenu {
+public class GlobalMenuTemplate  {
 
     private BorderPane pane;
 
-    public GlobalMenuTemplate(@NotNull MenuType type, Button[] buttons) {
-        super(type);
+    public GlobalMenuTemplate(Button[] buttons) {
 
         this.pane = new BorderPane();
 
@@ -55,6 +54,7 @@ public class GlobalMenuTemplate extends FXGLMenu {
         this.pane.setMinHeight(640);
         this.pane.setCenter((Node)gridPane);
     }
+
 
     public BorderPane getMenu() {
         return this.pane;
