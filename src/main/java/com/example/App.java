@@ -4,6 +4,7 @@ import com.almasb.fxgl.animation.Interpolators;
 import com.almasb.fxgl.app.ApplicationMode;
 import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
+import com.almasb.fxgl.app.MenuItem;
 import com.almasb.fxgl.app.scene.GameView;
 import com.almasb.fxgl.app.scene.IntroScene;
 import com.almasb.fxgl.app.scene.LoadingScene;
@@ -29,6 +30,7 @@ import com.example.components.Diamond;
 import com.example.components.Door;
 import com.example.components.Healthbar;
 import com.example.components.Player;
+import com.example.ui.UISceneFactory;
 
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
@@ -39,6 +41,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.util.Duration;
 
+import java.util.EnumSet;
 import java.util.Map;
 
 import static com.almasb.fxgl.dsl.FXGL.*;
@@ -52,10 +55,15 @@ public class App extends GameApplication {
 
     @Override
     protected void initSettings(GameSettings settings) {
+        settings.setAppIcon("fall.png");
         settings.setTitle("Kings and Pigs");
         settings.setVersion("0.1");
         settings.setWidth(960);
         settings.setHeight(640);
+        settings.setMainMenuEnabled(true);
+        settings.setDeveloperMenuEnabled(false);
+        settings.setEnabledMenuItems(EnumSet.of(MenuItem.EXTRA));
+        settings.setSceneFactory((SceneFactory)new UISceneFactory());
     }
 
     private Entity player, door, healthbar, diamond;
