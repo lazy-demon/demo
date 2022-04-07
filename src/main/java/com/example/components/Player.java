@@ -11,7 +11,6 @@ import javafx.util.Duration;
 
 public class Player extends Component {
 
-    private int speed = 0;
     int jumps = 2;
     boolean isLookingRight = true;
     boolean isBusy = false;
@@ -19,7 +18,14 @@ public class Player extends Component {
     private PhysicsComponent physics;
 
     private AnimatedTexture texture;
-    private AnimationChannel animIdle, animWalk, animJump, animFall, animAttack, animDoorIn, animDown, animHit;
+    private AnimationChannel animIdle;
+    private AnimationChannel animWalk;
+    private AnimationChannel animJump;
+    private AnimationChannel animFall;
+    private AnimationChannel animAttack;
+    private AnimationChannel animDoorIn;
+    private AnimationChannel animDown;
+    private AnimationChannel animHit;
 
     public Player() {
         animIdle = new AnimationChannel(FXGL.image("idle.png"), 11, 78, 58, Duration.seconds(1.1), 0, 10);
@@ -40,7 +46,7 @@ public class Player extends Component {
         entity.getViewComponent().addChild(texture);
 
         physics.onGroundProperty().addListener((obs, old, isOnGround) -> {
-            if (isOnGround) {
+            if (Boolean.TRUE.equals(isOnGround)) {
                 jumps = 2;
             }
         });
@@ -48,7 +54,7 @@ public class Player extends Component {
 
     @Override
     public void onUpdate(double tpf) {
-        if (isBusy == false) {
+        if (!isBusy) {
             if (physics.getVelocityY() > 0) {
                 if (texture.getAnimationChannel() != animJump) {
                     texture.loopAnimationChannel(animJump);
