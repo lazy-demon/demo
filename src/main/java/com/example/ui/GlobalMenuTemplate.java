@@ -40,7 +40,7 @@ public class GlobalMenuTemplate  {
 
         this.pane.setMinWidth(960);
         this.pane.setMinHeight(640);
-        this.pane.setCenter((Node)gridPane);
+        this.pane.setCenter(gridPane);
     }
 
 
