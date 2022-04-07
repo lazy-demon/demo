@@ -18,7 +18,7 @@ public class Healthbar extends Component {
 
 
     public Healthbar() {
-        animIdle = new AnimationChannel(FXGL.image("bigHeartIdle.png"), 8, 18, 14, Duration.seconds(1), 0, 7);
+        animIdle = new AnimationChannel(FXGL.image("healthbar.png"), 8, 66, 34, Duration.seconds(1), 0, 0);
 
         texture = new AnimatedTexture(animIdle);
     }

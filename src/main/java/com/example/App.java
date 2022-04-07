@@ -20,6 +20,8 @@ import com.almasb.fxgl.input.view.KeyView;
 import com.almasb.fxgl.input.virtual.VirtualButton;
 import com.almasb.fxgl.physics.CollisionHandler;
 import com.almasb.fxgl.physics.PhysicsComponent;
+import com.almasb.fxgl.texture.AnimatedTexture;
+import com.almasb.fxgl.texture.AnimationChannel;
 import com.almasb.fxgl.texture.Texture;
 import com.example.components.Diamond;
 import com.example.components.Door;
@@ -27,6 +29,9 @@ import com.example.components.Healthbar;
 import com.example.components.Player;
 
 import javafx.geometry.Point2D;
+import javafx.scene.Node;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -86,10 +91,10 @@ public class App extends GameApplication {
             }
         }, KeyCode.W, VirtualButton.A);
 
-        getInput().addAction(new UserAction("enter") {
+        getInput().addAction(new UserAction("attack") {
             @Override
             protected void onActionBegin() {
-                door.getComponent(Door.class).toggle();
+                player.getComponent(Player.class).attack();
             }
         }, KeyCode.E, VirtualButton.X);
 
@@ -98,44 +103,76 @@ public class App extends GameApplication {
     @Override
     protected void initGame() {
         getGameWorld().addEntityFactory(new Factory());
-        
+
         setLevelFromMap("terrain.tmx");
 
         player = spawn("player", 500, 500);
-        door = spawn("door", 800, 521);
+        door = spawn("door", 600, 521);
         // healthbar = spawn("healthbar", 800, 300);
 
         set("player", player);
         set("door", door);
         // set("healthbar", healthbar);
-    
-        entityBuilder()
-        .type(DIAMOND)
-        .at(400, 500)
-        .viewWithBBox(new Circle(9, 7, 5, null))
-        .with(new CollidableComponent(true))
-        .with(new Diamond())
-        .buildAndAttach();
 
-        // Viewport viewport = getGameScene().getViewport();
-        // viewport.setZoom(2);
-        // viewport.bindToEntity(player, getAppWidth() / 2, getAppHeight() / 2);
-        // viewport.setBounds(0, 0, 960, 640);
-        // viewport.setLazy(true);
+        entityBuilder()
+                .type(DIAMOND)
+                .at(400, 500)
+                .viewWithBBox(new Circle(9, 7, 5, null))
+                .with(new CollidableComponent(true))
+                .with(new Diamond())
+                .buildAndAttach();
+
+        AnimationChannel healthbarAnim = new AnimationChannel(FXGL.image("healthbar.png"), 1, 66, 34, Duration.seconds(1), 0, 0);
+        AnimatedTexture healthbarnode = new AnimatedTexture(healthbarAnim);
+        healthbarnode.setTranslateX(100);
+        healthbarnode.setTranslateY(50);
+        healthbarnode.setScaleX(3);
+        healthbarnode.setScaleY(3);
+        getGameScene().addUINode(healthbarnode);
+
+        AnimationChannel health1Anim = new AnimationChannel(FXGL.image("heartSmall.png"), 8, 18, 14, Duration.seconds(1), 0, 7);
+        AnimatedTexture health1node = new AnimatedTexture(health1Anim);
+        health1node.setTranslateX(85);
+        health1node.setTranslateY(60);
+        health1node.setScaleX(3);
+        health1node.setScaleY(3);
+        getGameScene().addUINode(health1node);
+
+        AnimationChannel health2Anim = new AnimationChannel(FXGL.image("heartSmall.png"), 8, 18, 14, Duration.seconds(1), 0, 7);
+        AnimatedTexture health2node = new AnimatedTexture(health2Anim);
+        health2node.setTranslateX(120);
+        health2node.setTranslateY(60);
+        health2node.setScaleX(3);
+        health2node.setScaleY(3);
+        getGameScene().addUINode(health2node);
+
+        AnimationChannel health3Anim = new AnimationChannel(FXGL.image("heartSmall.png"), 8, 18, 14, Duration.seconds(1), 0, 7);
+        AnimatedTexture health3node = new AnimatedTexture(health3Anim);
+        health3node.setTranslateX(150);
+        health3node.setTranslateY(60);
+        health3node.setScaleX(3);
+        health3node.setScaleY(3);
+        getGameScene().addUINode(health3node);
+
+        Viewport viewport = getGameScene().getViewport();
+        viewport.setZoom(2);
+        viewport.bindToEntity(player, getAppWidth() / 2, getAppHeight() / 2);
+        viewport.setBounds(0, 0, 960, 640);
+        viewport.setLazy(true);
     }
 
     @Override
     protected void initPhysics() {
         getPhysicsWorld().setGravity(0, 760);
 
-        onCollisionBegin(PLAYER, DIAMOND, (pl, prompt) -> {
+        onCollisionOneTimeOnly(PLAYER, DIAMOND, (pl, prompt) -> {
             prompt.getComponent(Diamond.class).collect();
 
             FXGL.runOnce(() -> {
                 prompt.removeFromWorld();
                 door.getComponent(Door.class).toggle();
             }, Duration.seconds(0.7));
-        });        
+        });
     }
 
     public static void main(String[] args) {
