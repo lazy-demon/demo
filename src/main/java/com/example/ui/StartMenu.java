@@ -30,7 +30,10 @@ import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.scene.text.FontPosture;
+import javafx.scene.text.FontWeight;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
@@ -81,13 +84,14 @@ class StartMenu extends FXGLMenu {
     imageView.setFitWidth(500); 
     imageView.setFitHeight(110); 
 
-    Label label = new Label("User Name");
-    label.setFont(new Font("verdana", 30));
+    Label label = new Label("Enter User Name");
+    label.setTextFill(Color.LIGHTGREEN);
+    label.setFont(Font.font("Verdana", FontWeight.BOLD, FontPosture.REGULAR, 20));
 
     TextField userNameField = new TextField();
     userNameField.setFont(new Font("verdana", 20));
     userNameField.setPadding(new Insets(10,10,10,10));
-    userNameField.setPromptText("Enter Name...");
+    userNameField.setPromptText("Name...");
 
     Button startGameBtn = this.uiComponentsFactory.customMainButton("START GAME");
 
@@ -116,6 +120,7 @@ class StartMenu extends FXGLMenu {
     gridPane.add(userNameField, 0, 2);
     gridPane.add(startGameBtn, 0, 3);
 
+    GridPane.setHalignment(label, HPos.CENTER);
     GridPane.setHalignment(startGameBtn, HPos.CENTER);
 
     borderPane.setMinWidth(960);
