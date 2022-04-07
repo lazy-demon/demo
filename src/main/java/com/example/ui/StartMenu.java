@@ -22,6 +22,10 @@ class StartMenu extends FXGLMenu {
     Button buttonStart = new Button("New Game");
     buttonStart.setFont(font);
 
+    buttonStart.setOnMouseClicked(event -> {
+      fireNewGame();
+    });
+
     Button buttonOptions = new Button("Options");
     buttonStart.setFont(font);
 
