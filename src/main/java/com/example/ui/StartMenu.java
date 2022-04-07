@@ -86,14 +86,21 @@ class StartMenu extends FXGLMenu {
     TextField userNameField = new TextField();
     userNameField.setFont(new Font("verdana", 20));
     userNameField.setPadding(new Insets(10,10,10,10));
+    userNameField.setPromptText("Enter Name...");
 
     Button startGameBtn = this.uiComponentsFactory.customMainButton("START GAME");
 
     startGameBtn.setOnMouseClicked(event -> {
-      fireNewGame();
-      getContentRoot().getChildren().clear();
-      setBackground("/assets/start menu/bg-menu.jpg");
-      getContentRoot().getChildren().addAll(PrimaryView);
+
+      if (userNameField.getText() == "") {
+        userNameField.setPromptText("Required Enter Name...");
+
+      } else {
+        fireNewGame();
+        getContentRoot().getChildren().clear();
+        setBackground("/assets/start menu/bg-menu.jpg");
+        getContentRoot().getChildren().addAll(PrimaryView);
+      }
     });
     
     gridPane.setAlignment(Pos.CENTER);
