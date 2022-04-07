@@ -42,6 +42,7 @@ public class GlobalMenuTemplate extends FXGLMenu {
         imageView.setFitHeight(110); 
 
         gridPane.setAlignment(Pos.CENTER);
+        gridPane.setVgap(60);
 
         gridPane.add(imageView, 1, 0);
 
