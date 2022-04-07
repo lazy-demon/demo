@@ -69,6 +69,7 @@ public class Factory implements EntityFactory {
                 .bbox(new HitBox(new Point2D(5,5), BoundingShape.circle(12)))
                 .bbox(new HitBox(new Point2D(10,25), BoundingShape.box(10, 17)))
                 .with(new CollidableComponent(true))
+                .with(new PhysicsComponent())
                 .with(new IrremovableComponent())
                 .with(new Door())
                 .build();

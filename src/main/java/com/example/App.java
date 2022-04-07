@@ -100,13 +100,23 @@ public class App extends GameApplication {
 
     }
 
+
+
+
+
+
+
+
+
+
+
     @Override
     protected void initGame() {
         getGameWorld().addEntityFactory(new Factory());
 
-        setLevelFromMap("terrain.tmx");
+        setLevelFromMap("map5.tmx");
 
-        player = spawn("player", 500, 500);
+        player = spawn("player", 100, 100);
         door = spawn("door", 600, 521);
         // healthbar = spawn("healthbar", 800, 300);
 
@@ -159,6 +169,16 @@ public class App extends GameApplication {
         viewport.bindToEntity(player, getAppWidth() / 2, getAppHeight() / 2);
         viewport.setBounds(0, 0, 960, 640);
         viewport.setLazy(true);
+
+
+
+
+        if (animatie met deur eindigt) {
+            setLevelFromMap("map" + 1 + ".tmx");
+        }
+
+
+
     }
 
     @Override
