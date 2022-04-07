@@ -16,7 +16,7 @@ public class Score {
     public void setUserScoreBoard() {
 
         try {
-            FileWriter fileWriter = new FileWriter("scoreboard.txt", false);
+            FileWriter fileWriter = new FileWriter("scoreboard.txt", true);
             BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
             bufferedWriter.write(this.userName);
             bufferedWriter.close();
