@@ -15,6 +15,8 @@ import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.SpawnData;
 import com.almasb.fxgl.entity.components.CollidableComponent;
 import com.almasb.fxgl.entity.level.Level;
+import com.almasb.fxgl.input.Trigger;
+import com.almasb.fxgl.input.TriggerListener;
 import com.almasb.fxgl.input.UserAction;
 import com.almasb.fxgl.input.view.KeyView;
 import com.almasb.fxgl.input.virtual.VirtualButton;
@@ -58,6 +60,9 @@ public class App extends GameApplication {
 
     private Entity player, door, healthbar, diamond;
 
+    boolean onDoor = false;
+
+
     @Override
     protected void initInput() {
         getInput().addAction(new UserAction("Left") {
@@ -87,14 +92,18 @@ public class App extends GameApplication {
         getInput().addAction(new UserAction("Jump") {
             @Override
             protected void onActionBegin() {
-                player.getComponent(Player.class).jump();
+                if (onDoor) {
+                    player.getComponent(Player.class).enter();
+                } else {
+                    player.getComponent(Player.class).jump();
+                }
             }
         }, KeyCode.W, VirtualButton.A);
 
         getInput().addAction(new UserAction("attack") {
             @Override
             protected void onActionBegin() {
-                player.getComponent(Player.class).attack();
+                player.getComponent(Player.class).enter();
             }
         }, KeyCode.E, VirtualButton.X);
 
@@ -109,6 +118,9 @@ public class App extends GameApplication {
         player = spawn("player", 500, 500);
         door = spawn("door", 600, 521);
         // healthbar = spawn("healthbar", 800, 300);
+
+        player.setZIndex(1);
+        door.setZIndex(0);
 
         set("player", player);
         set("door", door);
@@ -172,6 +184,31 @@ public class App extends GameApplication {
                 prompt.removeFromWorld();
                 door.getComponent(Door.class).toggle();
             }, Duration.seconds(0.7));
+        });
+
+        onCollisionOneTimeOnly(PLAYER, DOOR,  (pl, prompt) -> {
+            onDoor = true;
+        });
+
+        onCollisionEnd(PLAYER, DOOR,  (pl, prompt) -> {
+            onDoor = false;
+        });
+    }
+
+    @Override
+    protected void onUpdate(double tpf) {
+        System.out.println(onDoor);
+        getInput().addTriggerListener(new TriggerListener() {
+
+            // DOWN
+            // @Override
+            // protected void onAction(Trigger trigger) {
+            //    while (trigger == KeyCode.E) {
+            //        player.getComponent(Player.class).attack();
+            //    }
+            // }
+        
+
         });
     }
 
