@@ -7,6 +7,7 @@ import com.almasb.fxgl.app.scene.FXGLMenu;
 import com.almasb.fxgl.app.scene.MenuType;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.scene.Scene;
+import com.example.scoreboard.Score;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -96,6 +97,10 @@ class StartMenu extends FXGLMenu {
         userNameField.setPromptText("Required Enter Name...");
 
       } else {
+
+        Score score = new Score(userNameField.getText());
+        score.setUserScoreBoard();
+
         fireNewGame();
         getContentRoot().getChildren().clear();
         setBackground("/assets/start menu/bg-menu.jpg");
