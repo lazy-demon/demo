@@ -99,7 +99,7 @@ public class App extends GameApplication {
     protected void initGame() {
         getGameWorld().addEntityFactory(new Factory());
         
-        setLevelFromMap("map3.tmx");
+        setLevelFromMap("map5.tmx");
 
         // ergens hier zit het probleem 
         player = spawn("player", 100, 300);
