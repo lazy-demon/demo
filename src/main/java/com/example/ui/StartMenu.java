@@ -32,48 +32,26 @@ import javafx.stage.Stage;
 class StartMenu extends FXGLMenu {
 
   private UiComponentsFactory uiComponentsFactory = new UiComponentsFactory();
-
-  private BorderPane pane;
   
   public StartMenu(@NotNull MenuType type) throws FileNotFoundException {
     super(type);
 
-    this.pane = new BorderPane();
+    Button[] buttons = new Button[3];
 
-    Button buttonStart = this.uiComponentsFactory.customMainButton("New Game");
-    Button buttonSettings = this.uiComponentsFactory.customMainButton("Settings");
-    Button buttonOptions = this.uiComponentsFactory.customMainButton("options");
+    buttons[0] = this.uiComponentsFactory.customMainButton("New Game");
+    buttons[1] = this.uiComponentsFactory.customMainButton("Controls");
+    buttons[2] = this.uiComponentsFactory.customMainButton("Settins");
 
-    buttonStart.setOnMouseClicked(event -> {
+    buttons[0].setOnMouseClicked(event -> {
       fireNewGame();
     });
 
-    GridPane gridPane = new GridPane();
-
-    Image image;
-    ImageView imageView;
-
-    image = new Image("/assets/start menu/Kings and Pigs.png");
-
-    imageView = new ImageView(image);
-    imageView.setFitWidth(500); 
-
-    gridPane.add(imageView, 1, 0);
-    gridPane.add(buttonStart, 0, 1);
-    gridPane.add(buttonOptions, 1, 1);
-    gridPane.add(buttonSettings, 2, 1);
-
-    this.pane.setMinWidth(FXGL.getAppWidth());
-    this.pane.setMinHeight(FXGL.getAppHeight());
-    this.pane.setCenter((Node)gridPane);
-
-    gridPane.setAlignment(Pos.CENTER);
+    GlobalMenuTemplate globalMenuTemplate = new GlobalMenuTemplate(type, buttons);
 
     BackgroundImage menuBackground = new BackgroundImage(new Image("/assets/start menu/bg-menu.jpg", 960, 640, false, true), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
     getContentRoot().setBackground(new Background(new BackgroundImage[] { menuBackground }));
 
-    getContentRoot().getChildren().addAll(this.pane);
-    
+    getContentRoot().getChildren().addAll(globalMenuTemplate.getMenu());
   }
 }
     

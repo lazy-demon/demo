@@ -8,6 +8,7 @@ import com.almasb.fxgl.app.scene.FXGLMenu;
 import com.almasb.fxgl.app.scene.IntroScene;
 import com.almasb.fxgl.app.scene.MenuType;
 import com.almasb.fxgl.app.scene.SceneFactory;
+import com.almasb.fxgl.core.util.EmptyRunnable;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.physics.box2d.collision.shapes.Shape;
 
@@ -16,7 +17,14 @@ import org.jetbrains.annotations.NotNull;
 import javafx.beans.value.ObservableValue;
 import javafx.geometry.Point2D;
 import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.image.Image;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundImage;
+import javafx.scene.layout.BackgroundPosition;
+import javafx.scene.layout.BackgroundRepeat;
+import javafx.scene.layout.BackgroundSize;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
@@ -31,13 +39,35 @@ public class GameMenu extends FXGLMenu {
     private static final int SIZE = 150;
     
     private Animation<?> animation;
+
+    private UiComponentsFactory uiComponentsFactory = new UiComponentsFactory();
     
     public GameMenu(@NotNull MenuType type) {
       super(type);
+
+      
+      Button[] buttons = new Button[3];
+
+      buttons[0] = this.uiComponentsFactory.customMainButton("New Game");
+      buttons[1] = this.uiComponentsFactory.customMainButton("Restart Game");
+      buttons[2] = this.uiComponentsFactory.customMainButton("Settings");
+
+      buttons[0].setOnMouseClicked(event -> {
+        fireNewGame();
+      });
+
+      GlobalMenuTemplate globalMenuTemplate = new GlobalMenuTemplate(type, buttons);
+
+      BackgroundImage menuBackground = new BackgroundImage(new Image("/assets/start menu/bg-menu.jpg", 960, 640, false, true), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
+      getContentRoot().setBackground(new Background(new BackgroundImage[] { menuBackground }));
+
+      getContentRoot().getChildren().addAll(globalMenuTemplate.getMenu());
+
+      this.animation = FXGL.animationBuilder().duration(Duration.seconds(0.66D)).interpolator(Interpolators.EXPONENTIAL.EASE_OUT()).scale(new Node[] { (Node)getContentRoot() }).from(new Point2D(0.0D, 0.0D)).to(new Point2D(1.0D, 1.0D)).build();
       
     }
     public void onCreate() {
-      
+      this.animation.setOnFinished((Runnable)EmptyRunnable.INSTANCE);
       this.animation.stop();
       this.animation.start();
     }
