@@ -123,7 +123,7 @@ public class App extends GameApplication {
 
         setLevelFromMap("map1.tmx");
 
-        player = spawn("player", 100, 100);
+        player = spawn("player", 500, 500);
         door = spawn("door", 600, 521);
         // healthbar = spawn("healthbar", 800, 300);
 
@@ -194,18 +194,30 @@ public class App extends GameApplication {
             }, Duration.seconds(0.7));
         });
 
-        onCollisionBegin(PLAYER, DOOR,  (pl, prompt) -> {
-            onDoor = true;
+        FXGL.getPhysicsWorld().addCollisionHandler(new CollisionHandler(PLAYER, DOOR) {
+            @Override
+            protected void onCollisionBegin(Entity a, Entity b) {
+                super.onCollisionBegin(a, b);
+                onDoor = true;
+                System.out.println("on door");
+            }
+
+            @Override
+            protected void onCollisionEnd(Entity a, Entity b) {
+                super.onCollisionEnd(a, b);
+                onDoor = false;
+                System.out.println("not on door");
+            }
         });
 
-        onCollisionEnd(PLAYER, DOOR,  (pl, prompt) -> {
-            onDoor = false;
-        });
+
+
+
     }
 
     @Override
     protected void onUpdate(double tpf) {
-        System.out.println(onDoor);
+//        System.out.println(onDoor)
         getInput().addTriggerListener(new TriggerListener() {
 
             // DOWN
