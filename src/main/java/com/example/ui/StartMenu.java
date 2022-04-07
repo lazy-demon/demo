@@ -40,7 +40,7 @@ class StartMenu extends FXGLMenu {
 
     buttons[0] = this.uiComponentsFactory.customMainButton("New Game");
     buttons[1] = this.uiComponentsFactory.customMainButton("Controls");
-    buttons[2] = this.uiComponentsFactory.customMainButton("Settins");
+    buttons[2] = this.uiComponentsFactory.customMainButton("Settings");
 
     buttons[0].setOnMouseClicked(event -> {
       fireNewGame();
