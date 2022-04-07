@@ -1,18 +1,17 @@
 package com.example.components;
 
-import com.almasb.fxgl.core.math.FXGLMath;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.component.Component;
-import com.almasb.fxgl.physics.PhysicsComponent;
 import com.almasb.fxgl.texture.AnimatedTexture;
 import com.almasb.fxgl.texture.AnimationChannel;
 import javafx.geometry.Point2D;
 import javafx.util.Duration;
 
 public class Door extends Component {
-    private PhysicsComponent physics;
     private AnimatedTexture texture;
-    private AnimationChannel animOpen, animClose, animIdle;
+    private AnimationChannel animOpen;
+    private AnimationChannel animClose;
+    private AnimationChannel animIdle;
 
 
     public Door() {
@@ -29,12 +28,7 @@ public class Door extends Component {
         entity.getViewComponent().addChild(texture);
 
     }
-
-    @Override
-    public void onUpdate(double tpf) {
-
-    }
-
+    
     public void toggle() {
         if (texture.getAnimationChannel() != animOpen) {
             texture.playAnimationChannel(animOpen);

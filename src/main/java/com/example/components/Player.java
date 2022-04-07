@@ -1,6 +1,5 @@
 package com.example.components;
 
-import com.almasb.fxgl.core.math.FXGLMath;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.component.Component;
 import com.almasb.fxgl.physics.PhysicsComponent;
@@ -11,7 +10,6 @@ import javafx.util.Duration;
 
 public class Player extends Component {
 
-    private int speed = 0;
     int jumps = 2;
     boolean isLookingRight = true;
     boolean isBusy = false;
@@ -19,7 +17,14 @@ public class Player extends Component {
     private PhysicsComponent physics;
 
     private AnimatedTexture texture;
-    private AnimationChannel animIdle, animWalk, animJump, animFall, animAttack, animDoorIn, animDown, animHit;
+    private AnimationChannel animIdle;
+    private AnimationChannel animWalk;
+    private AnimationChannel animJump;
+    private AnimationChannel animFall;
+    private AnimationChannel animAttack;
+    private AnimationChannel animDoorIn;
+    private AnimationChannel animDown;
+    private AnimationChannel animHit;
 
     public Player() {
         animIdle = new AnimationChannel(FXGL.image("idle.png"), 11, 78, 58, Duration.seconds(1.1), 0, 10);
@@ -40,7 +45,7 @@ public class Player extends Component {
         entity.getViewComponent().addChild(texture);
 
         physics.onGroundProperty().addListener((obs, old, isOnGround) -> {
-            if (isOnGround) {
+            if (Boolean.TRUE.equals(isOnGround)) {
                 jumps = 2;
             }
         });
@@ -48,7 +53,7 @@ public class Player extends Component {
 
     @Override
     public void onUpdate(double tpf) {
-        if (isBusy == false) {
+        if (!isBusy) {
             if (physics.getVelocityY() > 0) {
                 if (texture.getAnimationChannel() != animJump) {
                     texture.loopAnimationChannel(animJump);
@@ -86,42 +91,34 @@ public class Player extends Component {
     }
 
     public void down() {
-        if (isBusy == false) {
+        if (!isBusy) {
             isBusy = true;
             texture.playAnimationChannel(animDown);
-            FXGL.runOnce(() -> {
-                isBusy = false;
-            }, Duration.seconds(1));
+            FXGL.runOnce(() -> isBusy = false, Duration.seconds(1));
         }
     }
 
     public void attack() {
-        if (isBusy == false) {
+        if (!isBusy) {
             isBusy = true;
             texture.playAnimationChannel(animAttack);
-            FXGL.runOnce(() -> {
-                isBusy = false;
-            }, Duration.seconds(0.5));
+            FXGL.runOnce(() -> isBusy = false, Duration.seconds(0.5));
         }
     }
 
     public void enter() {
-        if (isBusy == false) {
+        if (!isBusy) {
             isBusy = true;
             texture.playAnimationChannel(animDoorIn);
-            FXGL.runOnce(() -> {
-                isBusy = false;
-            }, Duration.seconds(1));
+            FXGL.runOnce(() -> isBusy = false, Duration.seconds(1));
         }
     }
 
     public void hit() {
-        if (isBusy == false) {
+        if (!isBusy) {
             isBusy = true;
             texture.playAnimationChannel(animHit);
-            FXGL.runOnce(() -> {
-                isBusy = false;
-            }, Duration.seconds(0.5));
+            FXGL.runOnce(() -> isBusy = false, Duration.seconds(0.5));
         }
     }
 
