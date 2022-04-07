@@ -71,6 +71,7 @@ public class App extends GameApplication {
     private Entity player, door, healthbar, diamond, king;
 
     boolean onDoor = false;
+    boolean diamondCollected = false;
 
     int level = 0;
 
@@ -108,8 +109,11 @@ public class App extends GameApplication {
         getInput().addAction(new UserAction("Jump") {
             @Override
             protected void onActionBegin() {
-                if (onDoor) {
+                if (onDoor && diamondCollected) {
                     player.getComponent(Player.class).enter();
+                    FXGL.runOnce(() -> {
+                        nextLevel();
+                    }, Duration.seconds(0.7));
                 } else {
                     player.getComponent(Player.class).jump();
                 }
@@ -146,23 +150,15 @@ public class App extends GameApplication {
         nextLevel();
 
         player = spawn("player", 100, 100);
-        // king = spawn("king", 285, 228);
-        door = spawn("door", 600, 521);
+        // // king = spawn("king", 285, 228);
+        // door = spawn("door", 600, 521);
 
         player.setZIndex(1);
         door.setZIndex(0);
 
         set("player", player);
-        // set("king", king);
-        set("door", door);
-
-        entityBuilder()
-                .type(DIAMOND)
-                .at(400, 500)
-                .viewWithBBox(new Circle(9, 7, 5, null))
-                .with(new CollidableComponent(true))
-                .with(new Diamond())
-                .buildAndAttach();
+        // // set("king", king);
+        // set("door", door);
 
         AnimationChannel healthbarAnim = new AnimationChannel(FXGL.image("healthbar.png"), 1, 66, 34, Duration.seconds(1), 0, 0);
         AnimatedTexture healthbarnode = new AnimatedTexture(healthbarAnim);
@@ -216,6 +212,7 @@ public class App extends GameApplication {
 
             FXGL.runOnce(() -> {
                 prompt.removeFromWorld();
+                diamondCollected = true;
                 door.getComponent(Door.class).toggle();
             }, Duration.seconds(0.7));
         });
@@ -268,6 +265,17 @@ public class App extends GameApplication {
             level++;
         }
         setLevelFromMap("map" + level  + ".tmx");
+        door = spawn("door", 600, 521);
+        set("door", door);
+        diamondCollected = false;
+
+        entityBuilder()
+        .type(DIAMOND)
+        .at(400, 500)
+        .viewWithBBox(new Circle(9, 7, 5, null))
+        .with(new CollidableComponent(true))
+        .with(new Diamond())
+        .buildAndAttach();
     }
 
     
