@@ -145,12 +145,8 @@ public class App extends GameApplication {
 
         nextLevel();
 
-<<<<<<< HEAD
         player = spawn("player", 100, 100);
         // king = spawn("king", 285, 228);
-=======
-        player = spawn("player", 500, 500);
->>>>>>> 4b4190e10305a0efc7e71289c5a628c5352cb383
         door = spawn("door", 600, 521);
 
         player.setZIndex(1);
@@ -247,11 +243,7 @@ public class App extends GameApplication {
 
     @Override
     protected void onUpdate(double tpf) {
-<<<<<<< HEAD
         // System.out.println(onDoor);
-=======
-//        System.out.println(onDoor)
->>>>>>> 4b4190e10305a0efc7e71289c5a628c5352cb383
         getInput().addTriggerListener(new TriggerListener() {
 
             // DOWN
