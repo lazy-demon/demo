@@ -1,24 +1,21 @@
 package com.example.ui;
 
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
 import com.almasb.fxgl.app.scene.FXGLMenu;
 import com.almasb.fxgl.app.scene.MenuType;
-import com.almasb.fxgl.dsl.FXGL;
-import com.almasb.fxgl.scene.Scene;
+import com.example.scoreboard.Score;
 
 import org.jetbrains.annotations.NotNull;
 
+import javafx.geometry.HPos;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.geometry.Rectangle2D;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundImage;
 import javafx.scene.layout.BackgroundPosition;
@@ -27,23 +24,27 @@ import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.scene.text.FontPosture;
+import javafx.scene.text.FontWeight;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
+import javafx.scene.text.Font;
 
 class StartMenu extends FXGLMenu {
 
   GlobalMenuTemplate globalMenuTemplate;
   private UiComponentsFactory uiComponentsFactory = new UiComponentsFactory();
-  private BorderPane PrimaryView;
+  private BorderPane primaryView;
   
   public StartMenu(@NotNull MenuType type) throws FileNotFoundException {
     super(type);
 
     globalMenuTemplate = new GlobalMenuTemplate(setMainMenu());
-    PrimaryView = globalMenuTemplate.getMenu();
+    primaryView = globalMenuTemplate.getMenu();
 
-    getContentRoot().getChildren().addAll(PrimaryView);
+    getContentRoot().getChildren().addAll(primaryView);
   }
 
   public Button[] setMainMenu() {
@@ -78,15 +79,32 @@ class StartMenu extends FXGLMenu {
     imageView.setFitWidth(500); 
     imageView.setFitHeight(110); 
 
-    Label label = new Label("User Name");
+    Label label = new Label("Enter User Name");
+    label.setTextFill(Color.LIGHTGREEN);
+    label.setFont(Font.font("Verdana", FontWeight.BOLD, FontPosture.REGULAR, 20));
+
     TextField userNameField = new TextField();
-    Button startGameBtn = new Button("Start Game");
+    userNameField.setFont(new Font("verdana", 20));
+    userNameField.setPadding(new Insets(10,10,10,10));
+    userNameField.setPromptText("Name...");
+
+    Button startGameBtn = this.uiComponentsFactory.customMainButton("START GAME");
 
     startGameBtn.setOnMouseClicked(event -> {
-      fireNewGame();
-      getContentRoot().getChildren().clear();
-      setBackground("/assets/start menu/bg-menu.jpg");
-      getContentRoot().getChildren().addAll(PrimaryView);
+
+      if ("".equals(userNameField.getText())) {
+        userNameField.setPromptText("Required Enter Name...");
+
+      } else {
+
+        Score score = new Score(userNameField.getText());
+        score.setUserScoreBoard();
+
+        fireNewGame();
+        getContentRoot().getChildren().clear();
+        setBackground("/assets/start menu/bg-menu.jpg");
+        getContentRoot().getChildren().addAll(primaryView);
+      }
     });
     
     gridPane.setAlignment(Pos.CENTER);
@@ -97,9 +115,12 @@ class StartMenu extends FXGLMenu {
     gridPane.add(userNameField, 0, 2);
     gridPane.add(startGameBtn, 0, 3);
 
+    GridPane.setHalignment(label, HPos.CENTER);
+    GridPane.setHalignment(startGameBtn, HPos.CENTER);
+
     borderPane.setMinWidth(960);
     borderPane.setMinHeight(640);
-    borderPane.setCenter((Node)gridPane);
+    borderPane.setCenter(gridPane);
 
     setBackground("/assets/start menu/bg-user-menu.jpg");
 
@@ -108,7 +129,7 @@ class StartMenu extends FXGLMenu {
 
   public void setBackground(String path) {
     BackgroundImage menuBackground = new BackgroundImage(new Image(path, 960, 640, false, true), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
-    getContentRoot().setBackground(new Background(new BackgroundImage[] { menuBackground }));
+    getContentRoot().setBackground(new Background(menuBackground));
 
   }
 }

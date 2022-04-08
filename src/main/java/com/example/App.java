@@ -1,14 +1,8 @@
 package com.example;
 
-import com.almasb.fxgl.animation.Interpolators;
-import com.almasb.fxgl.app.ApplicationMode;
 import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
 import com.almasb.fxgl.app.MenuItem;
-import com.almasb.fxgl.app.scene.GameView;
-import com.almasb.fxgl.app.scene.IntroScene;
-import com.almasb.fxgl.app.scene.LoadingScene;
-import com.almasb.fxgl.app.scene.SceneFactory;
 import com.almasb.fxgl.app.scene.Viewport;
 import com.almasb.fxgl.audio.AudioPlayer;
 import com.almasb.fxgl.audio.Music;
@@ -22,24 +16,19 @@ import com.almasb.fxgl.entity.components.CollidableComponent;
 import com.almasb.fxgl.entity.level.Level;
 import com.almasb.fxgl.input.Trigger;
 import com.almasb.fxgl.input.TriggerListener;
+import com.almasb.fxgl.dsl.FXGL;
+import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.input.UserAction;
-import com.almasb.fxgl.input.view.KeyView;
 import com.almasb.fxgl.input.virtual.VirtualButton;
 import com.almasb.fxgl.physics.CollisionHandler;
 import com.almasb.fxgl.physics.PhysicsComponent;
-import com.almasb.fxgl.texture.AnimatedTexture;
-import com.almasb.fxgl.texture.AnimationChannel;
-import com.almasb.fxgl.texture.Texture;
 import com.example.components.Diamond;
 import com.example.components.Door;
-import com.example.components.Healthbar;
 import com.example.components.Player;
+import com.example.components.Spawn;
 import com.example.ui.UISceneFactory;
 
 import javafx.geometry.Point2D;
-import javafx.scene.Node;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
@@ -51,9 +40,9 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import javafx.util.Duration;
+
 import java.util.EnumSet;
-import java.util.List;
-import java.util.Map;
 
 import javax.print.attribute.standard.Media;
 import javax.sound.sampled.AudioInputStream;
@@ -77,20 +66,16 @@ public class App extends GameApplication {
         settings.setMainMenuEnabled(true);
         settings.setDeveloperMenuEnabled(false);
         settings.setEnabledMenuItems(EnumSet.of(MenuItem.EXTRA));
-        settings.setSceneFactory((SceneFactory)new UISceneFactory());
+        settings.setSceneFactory(new UISceneFactory());
     }
 
-    private Entity player, door, healthbar, diamond, king;
+    private Entity player;
+    private Entity door;
 
     boolean onDoor = false;
     boolean diamondCollected = false;
 
     int level = 0;
-
-    // make list
-   List<AnimatedTexture> list = new ArrayList<>();
-
-
 
     @Override
     protected void initInput() {
@@ -128,9 +113,7 @@ public class App extends GameApplication {
             protected void onActionBegin() {
                 if (onDoor && diamondCollected) {
                     player.getComponent(Player.class).enter();
-                    FXGL.runOnce(() -> {
-                        nextLevel();
-                    }, Duration.seconds(0.7));
+                    FXGL.runOnce(App.this::nextLevel, Duration.seconds(0.7));
                 } else {
                     player.getComponent(Player.class).jump();
                 }
@@ -154,7 +137,7 @@ public class App extends GameApplication {
         getInput().addAction(new UserAction("hit") {
             @Override
             protected void onActionBegin() {
-                getGameScene().removeUINode(list.get(2));
+                // getGameScene().removeUINode(list.get(2));
                 player.getComponent(Player.class).hit();
             }
         }, KeyCode.BACK_SLASH, VirtualButton.X);
@@ -171,58 +154,25 @@ public class App extends GameApplication {
 
         nextLevel();
 
-        player = spawn("player", 100, 100);
-        // // king = spawn("king", 285, 228);
-        // door = spawn("door", 600, 521);
+        player = spawn("player", 300, 550);
 
         player.setZIndex(1);
         door.setZIndex(0);
 
         set("player", player);
-        // // set("king", king);
-        // set("door", door);
 
-        AnimationChannel healthbarAnim = new AnimationChannel(FXGL.image("healthbar.png"), 1, 66, 34, Duration.seconds(1), 0, 0);
-        AnimatedTexture healthbarnode = new AnimatedTexture(healthbarAnim);
-        healthbarnode.setTranslateX(100);
-        healthbarnode.setTranslateY(50);
-        healthbarnode.setScaleX(3);
-        healthbarnode.setScaleY(3);
-        getGameScene().addUINode(healthbarnode);
-
-        AnimationChannel health1Anim = new AnimationChannel(FXGL.image("heartSmall.png"), 8, 18, 14, Duration.seconds(1), 0, 7);
-        AnimatedTexture health1node = new AnimatedTexture(health1Anim);
-        health1node.setTranslateX(85);
-        health1node.setTranslateY(60);
-        health1node.setScaleX(3);
-        health1node.setScaleY(3);
-        getGameScene().addUINode(health1node);
-
-        AnimationChannel health2Anim = new AnimationChannel(FXGL.image("heartSmall.png"), 8, 18, 14, Duration.seconds(1), 0, 7);
-        AnimatedTexture health2node = new AnimatedTexture(health2Anim);
-        health2node.setTranslateX(120);
-        health2node.setTranslateY(60);
-        health2node.setScaleX(3);
-        health2node.setScaleY(3);
-        getGameScene().addUINode(health2node);
-
-        AnimationChannel health3Anim = new AnimationChannel(FXGL.image("heartSmall.png"), 8, 18, 14, Duration.seconds(1), 0, 7);
-        AnimatedTexture health3node = new AnimatedTexture(health3Anim);
-        health3node.setTranslateX(150);
-        health3node.setTranslateY(60);
-        health3node.setScaleX(3);
-        health3node.setScaleY(3);
-        getGameScene().addUINode(health3node);
+            Spawn.healthbar(100, 50);
+            Spawn.health(85, 60);
+            Spawn.health(120, 60);
+            Spawn.health(150, 60);
 
         Viewport viewport = getGameScene().getViewport();
         viewport.setZoom(2);
-        viewport.bindToEntity(player, getAppWidth() / 2, getAppHeight() / 2);
+        viewport.bindToEntity(player, getAppWidth() / 2d, getAppHeight() / 2d);
         viewport.setBounds(0, 0, 960, 640);
         viewport.setLazy(true);
 
-        list.add(health1node);
-        list.add(health2node);
-        list.add(health3node);
+
     }
 
     @Override
@@ -239,22 +189,21 @@ public class App extends GameApplication {
             }, Duration.seconds(0.7));
         });
 
+        onCollisionOneTimeOnly(PLAYER, COIN, (pl, prompt) -> prompt.removeFromWorld());
+
         FXGL.getPhysicsWorld().addCollisionHandler(new CollisionHandler(PLAYER, DOOR) {
             @Override
             protected void onCollisionBegin(Entity a, Entity b) {
                 super.onCollisionBegin(a, b);
                 onDoor = true;
-                System.out.println("on door");
             }
 
             @Override
             protected void onCollisionEnd(Entity a, Entity b) {
                 super.onCollisionEnd(a, b);
                 onDoor = false;
-                System.out.println("not on door");
             }
         });
-
 
 
 
@@ -309,21 +258,30 @@ public class App extends GameApplication {
         } else {
             level++;
         }
-        setLevelFromMap("map" + level  + ".tmx");
+
+        setLevelFromMap("map" + level + ".tmx");
+
+        diamondCollected = false;
         door = spawn("door", 600, 521);
         set("door", door);
-        diamondCollected = false;
 
-        entityBuilder()
-        .type(DIAMOND)
-        .at(400, 500)
-        .viewWithBBox(new Circle(9, 7, 5, null))
-        .with(new CollidableComponent(true))
-        .with(new Diamond())
-        .buildAndAttach();
+        switch (level) {
+            case 1:
+                Spawn.diamond(400, 550);
+                Spawn.coin(420, 550);
+                break;
+            case 2:
+                break;
+            case 3:
+                break;
+            case 4:
+                break;
+            case 5:
+                break;
+            default:
+                break;
+        }
     }
-
-    
 
     public static void main(String[] args) {
         launch(args);
