@@ -4,6 +4,7 @@ import java.io.FileNotFoundException;
 
 import com.almasb.fxgl.app.scene.FXGLMenu;
 import com.almasb.fxgl.app.scene.MenuType;
+import com.almasb.fxgl.dsl.FXGL;
 import com.example.scoreboard.Score;
 
 import org.jetbrains.annotations.NotNull;
@@ -51,13 +52,15 @@ class StartMenu extends FXGLMenu {
     Button[] buttons = new Button[3];
 
     buttons[0] = this.uiComponentsFactory.customMainButton("Enter User");
-    buttons[1] = this.uiComponentsFactory.customMainButton("Controls");
+    buttons[1] = this.uiComponentsFactory.customMainButton("Exit");
     buttons[2] = this.uiComponentsFactory.customMainButton("Settings");
 
     buttons[0].setOnMouseClicked(event -> {
       getContentRoot().getChildren().clear();
       getContentRoot().getChildren().addAll(setUser());
     });
+
+    buttons[1].setOnMouseClicked(e -> FXGL.getGameController().exit());
 
     setBackground("/assets/start menu/bg-menu.jpg");
 
