@@ -73,7 +73,7 @@ class StartMenu extends FXGLMenu {
     Image image;
     ImageView imageView;
 
-    image = new Image("/assets/start menu/Kings and Pigs.png");
+    image = new Image("/assets/start menu/King and Pigs logo.png");
 
     imageView = new ImageView(image); 
     imageView.setFitWidth(500); 

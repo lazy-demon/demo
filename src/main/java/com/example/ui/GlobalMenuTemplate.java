@@ -21,11 +21,11 @@ public class GlobalMenuTemplate  {
         Image image;
         ImageView imageView;
 
-        image = new Image("/assets/start menu/Kings and Pigs.png");
+        image = new Image("/assets/start menu/King and Pigs logo.png");
 
         imageView = new ImageView(image); 
-        imageView.setFitWidth(500); 
-        imageView.setFitHeight(110); 
+        imageView.setFitWidth(630); 
+        imageView.setFitHeight(160); 
 
         gridPane.setAlignment(Pos.CENTER);
         gridPane.setVgap(60);
