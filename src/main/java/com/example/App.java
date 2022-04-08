@@ -10,10 +10,14 @@ import com.almasb.fxgl.app.scene.IntroScene;
 import com.almasb.fxgl.app.scene.LoadingScene;
 import com.almasb.fxgl.app.scene.SceneFactory;
 import com.almasb.fxgl.app.scene.Viewport;
+import com.almasb.fxgl.audio.AudioPlayer;
+import com.almasb.fxgl.audio.Music;
+import com.almasb.fxgl.audio.Sound;
 import com.almasb.fxgl.core.util.LazyValue;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.SpawnData;
+import com.almasb.fxgl.entity.action.ContinuousAction;
 import com.almasb.fxgl.entity.components.CollidableComponent;
 import com.almasb.fxgl.entity.level.Level;
 import com.almasb.fxgl.input.Trigger;
@@ -37,14 +41,22 @@ import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.util.Duration;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
+
+import javax.print.attribute.standard.Media;
+import javax.sound.sampled.AudioInputStream;
 
 import static com.almasb.fxgl.dsl.FXGL.*;
 import static com.example.EntityType.*;
@@ -82,6 +94,11 @@ public class App extends GameApplication {
 
     @Override
     protected void initInput() {
+
+
+
+
+
         getInput().addAction(new UserAction("Left") {
             @Override
             protected void onAction() {
@@ -145,6 +162,11 @@ public class App extends GameApplication {
 
     @Override
     protected void initGame() {
+
+        Playmusic();
+
+
+
         getGameWorld().addEntityFactory(new Factory());
 
         nextLevel();
@@ -238,6 +260,29 @@ public class App extends GameApplication {
 
     }
 
+    public void Playmusic(){
+//    Media media = new Media("file:///pirates.wav");
+//    MediaPlayer player = new MediaPlayer(media);
+//    player.setAutoPlay(true);
+
+
+
+        FXGL.getSettings().setGlobalMusicVolume(1);
+        Music muziek = FXGL.getAssetLoader().loadMusic("pirates.wav");
+        FXGL.getAudioPlayer().loopMusic(muziek);
+    }
+
+    public void drip(){
+        FXGL.onKey(KeyCode.X, () -> {
+            FXGL.getAudioPlayer().pauseAllMusic();
+            Music dripMuziek = FXGL.getAssetLoader().loadMusic("pirates.wav");
+            FXGL.getAudioPlayer().loopMusic(dripMuziek);
+        });
+    }
+
+
+
+
     @Override
     protected void onUpdate(double tpf) {
         // System.out.println(onDoor);
@@ -282,5 +327,6 @@ public class App extends GameApplication {
 
     public static void main(String[] args) {
         launch(args);
+
     }
 }
