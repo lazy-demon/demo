@@ -269,14 +269,31 @@ public class App extends GameApplication {
             case 1:
                 Spawn.diamond(400, 550);
                 Spawn.coin(420, 550);
+                Spawn.coin(420, 750);
                 break;
             case 2:
+                Spawn.diamond(820, 550);
+                Spawn.coin(270, 300);
+                Spawn.coin(170, 350);
+                Spawn.coin(418,300);
                 break;
             case 3:
+                Spawn.diamond(800, 550);
+                Spawn.coin(220, 550);
+                Spawn.coin(400, 550);
+                Spawn.coin(600, 550);
                 break;
             case 4:
+                Spawn.diamond(800, 90);
+                Spawn.coin(520, 550);
+                Spawn.coin(800, 550);
+                Spawn.coin(100, 200);
                 break;
             case 5:
+                Spawn.diamond(850, 80);
+                Spawn.coin(490, 360);
+                Spawn.coin(200, 200);
+                Spawn.coin(300, 300);
                 break;
             default:
                 break;
